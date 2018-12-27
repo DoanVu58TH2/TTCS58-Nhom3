@@ -46,51 +46,81 @@ int NgayHopLe(int Day,int MM, int YY){
 	return a;
 }
 
-int STTDInYr(NgayThang n){
-	int count = n.Ngay;
-	for (int i = 1 ; i<= n.Thang - 1; i++){
-		count = count + SoNgay(i,n.Nam);
+int STTDayInYear(int dd, int mm,int yy){
+	int count = dd;
+	for (int i = 1 ; i<= mm - 1; i++){
+		count = count + SoNgay(i,yy);
 	}
 	return count;
 }
 
-
-//	int stttrongnam(ngaythang x); = STTDInYr(NgayThang n)
-int NgayTuSTT(int stt,NgayThang n){
-	
- 	int thang[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
- 	stt = 0;
- 	for (int i=1;i<n.Thang;i++)
- 		stt += thang[i];
- 	stt += n.Ngay;
- 	if (n.Thang>2)
- 	if (CheckNhuan(n.Nam)) stt+=1;
- 	return stt;	
- }	
-NgayThang ADD(NgayThang n,int x){
-
-	
-	int kq = x + STTDInYr(n);
-	int nam = n.Nam;
-	if(kq <= 365){
-		return NgayTuSTT(kq,nam);
-		}
-		else 
-			if(CheckNhuan(nam) == 1)
-				if(kq == 366)
-					return NgayTuSTT(kq,nam);
-				else return NgayTuSTT(kq-366,nam+1);
-			else return NgayTuSTT(kq-365,nam+1);
+void CongThem(NgayThang &N){
+	int n;
+	cout <<"\nNhap vao so nguyen duong : ";
+	cin >>n;
+	while(n != 0){
+		if((N.Ngay<31 &&(N.Thang==1 || N.Thang==3 || N.Thang==5 || N.Thang==7 || N.Thang==8 || N.Thang==10 || N.Thang==12)) || (N.Ngay < 30 && (N.Thang==4 || N.Thang==6||N.Thang == 9))|| (N.Ngay<29 && CheckNhuan(N.Nam))|| (N.Ngay<28 && CheckNhuan(N.Nam)==false) )
+			N.Ngay++;
+		else{
+			if(N.Thang < 12){
+				N.Thang++;
+				N.Ngay = 1;	
+			}
+			else{
+				N.Nam++;
+				N.Thang = 1;
+				N.Ngay = 1;
+			}
+}	n--;
+	}
 }
 
+void TruRa(NgayThang &N){
+	int n;
+	cout <<"\nNhap vao so nguyen duong : ";
+	cin >>n;
+		while(n != 0)
+		{
+			if( N.Ngay> 1 )
+				N.Ngay--;
+			else
+			{
+				if(N.Thang >1)
+				{
+					N.Thang--;
+					if(N.Thang == 1 || N.Thang == 3 || N.Thang == 5 || N.Thang == 7 || N.Thang == 8 || N.Thang ==10 || N.Thang == 12)
+						N.Ngay = 31;
+					else
+						if(N.Thang == 4 || N.Thang == 6 || N.Thang == 9 || N.Thang == 11)
+						N.Ngay = 30;
+						else
+							{
+							if(CheckNhuan(N.Nam))
+							N.Ngay = 29;
+							else
+							N.Ngay = 28;
+						}
+		
+				}
+				else{
+				N.Nam --;
+				N.Thang = 12;
+				N.Ngay = 31;
+			}
+			}
+				n--;
+		}
+}
 
-
+void InNgay(NgayThang n){
+	cout<<n.Ngay<<"/"<<n.Thang<<"/"<<n.Nam;
+}
 int main(){
 	string st;
 	NgayThang x;
 	char t[4];
-	do{
-	cout<<"Nhap vao ngay thang (dd/mm/yyyy) : ";
+	
+	cout<<"Nhap vao Ngay thang (dd/mm/yyyy) : ";
 	getline(cin,st);
 	
 	t[0] = st[0];
@@ -107,21 +137,27 @@ int main(){
 	t[3] = st[9];
 	x.Nam = atoi(t);
 	
-	}
-	while(NgayHopLe(x.Ngay,x.Thang,x.Nam) == 0);
 	if(CheckNhuan(x.Nam)){
-		cout<<"Nam " <<x.Nam<<" la nam nhuan!"<<endl;
+		cout<<"Nam " <<x.Nam<<" la Nam nhuan!"<<endl;
 		
 	}
 	else {
-		cout<<"Nam "<<x.Nam<<" ko la nam nhuan!"<<endl;
+		cout<<"Nam "<<x.Nam<<" ko la Nam nhuan!"<<endl;
 	}
 	if (NgayHopLe(x.Ngay,x.Thang,x.Nam))
 	{
-		int count = STTDInYr(x);
+		int count = STTDayInYear(x.Ngay,x.Thang,x.Nam);
 		cout<<"Ngay thu : " <<count<<endl;
 	}
 	else{
-		cout<<"Ngay ko hop le!"<<endl;
+		cout<<"\nNgay ko hop le!"<<endl;
 	}
+	
+	
+	CongThem(x);
+	cout<<"\nNgay sau khi cong them la :";
+	InNgay(x);
+	TruRa(x);
+	cout<<"\nNgay sau khi tru ra la : ";
+	InNgay(x);
 }
