@@ -90,25 +90,59 @@ void InDB(){
 }
 
 void XoaContact(char *sdt){
+	int a;
 	
+	int size=db.size();
+	for(int i=0;i<size;i++){
+		if(strcmp(db[i].sdt,sdt)==0){
+			a=i;
+			db.erase(db.begin()+a);
+		}
+	}
 }
 
  
 int main(){
 	bool YN;
-	cout<<"=======***Tao Contact***======="<<endl;	
+//	cout<<"=======***Tao Contact***======="<<endl;	
+//	Contact c1;
+//	strcpy(c1.sdt,"3456453");
+//	strcpy(c1.ten, "hung");
+//	strcpy(c1.gmail,"!@?ad");
+//	strcpy(c1.diachi, "hung");
+//	strcpy(c1.gioitinh, "nam");
+//	Contact c2;
+//	strcpy(c2.sdt,"123256");
+//	strcpy(c2.ten, "tien");
+//	strcpy(c2.gmail,"!@?ad");
+//	strcpy(c2.diachi, "ádzxc");
+//	strcpy(c2.gioitinh, "nu");
+//	ADD(c1);
+//	ADD(c2);
+//	docDBTuFile();
+	cout<<"=======***Danh Sach***======="<<endl;	
 	docDBTuFile();
 	InDB();
 	cout<<"========================================================"<<endl;
+	//Lua chon them DB
 	cout<<"Ban Co Muon Them Danh Sach Khong??? (Y/N)"<<endl;
 	cin>>YN ;
 	if(YN == true){
 		AddContact();	
 		InDB();
 	}
+	//Lua chon xoa DB
+	cout<<"Ban Co Muon Xoa Danh Sach Khong??? (Y/N)"<<endl;	
+	cin>>YN;
 	if(YN == true){
-			XoaContact(c.sdt);
+	char sdt[11];
+	cout<<"nhap vao sdt can xoa : ";
+	cin>>sdt;
+	XoaContact(sdt);
+	cout<<"danh ba sau khi sua la "<<endl;
+			XoaContact(sdt);
 			InDB();
 		}
+	
 }
 
